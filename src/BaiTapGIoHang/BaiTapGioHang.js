@@ -10,6 +10,7 @@ export default class BaiTapGioHang extends Component {
       dsDt: dataProps,
       dtShow: dataProps[0],
       gioHang: [],
+      tongSoLuong: 0,
     };
   }
 
@@ -23,46 +24,47 @@ export default class BaiTapGioHang extends Component {
     let cloneGioHang = [...this.state.gioHang];
     let listIdDt = cloneGioHang.map((dt) => dt.id);
     if (listIdDt.includes(_dtDuocChonMua.id)) {
-      //console.log("co roi");
       _dtDuocChonMua.sl++;
-      this.setState({
-        gioHang: cloneGioHang,
-      });
-      // console.log(cloneGioHang);
     } else {
       _dtDuocChonMua.sl = 1;
       cloneGioHang.push(_dtDuocChonMua);
-      this.setState({
-        gioHang: cloneGioHang,
-      });
-      // console.log(cloneGioHang);
     }
+    this.setState({
+      gioHang: cloneGioHang,
+    });
+    this.tinhSoLuong(cloneGioHang);
+  };
+  tinhSoLuong = (_gioHang) => {
+    let cloneGioHang = [..._gioHang];
+    let mangSoLuong = [...cloneGioHang.map((item) => item.sl)];
+    let tongSanPham = 0;
+    mangSoLuong.forEach((item) => (tongSanPham += item));
+
+    this.setState({
+      tongSoLuong: tongSanPham,
+    });
+
+    console.log(tongSanPham);
   };
   changeSoLuong = (_id, _chance) => {
     let cloneGioHang = [...this.state.gioHang];
     let viTriDt = cloneGioHang.findIndex((dt) => dt.id === _id);
-    if (_chance == "tang") {
-      cloneGioHang[viTriDt].sl++;
-      this.setState({
-        gioHang: cloneGioHang,
-      });
-    } else {
+
+    if (_chance == "giam" && viTriDt !== -1) {
       if (cloneGioHang[viTriDt].sl === 1) {
         if (window.confirm("Bạn có muốn xoá sản phẩm")) {
           cloneGioHang.splice(viTriDt, 1);
-          this.setState({
-            gioHang: cloneGioHang,
-          });
         }
       } else {
         cloneGioHang[viTriDt].sl--;
-        this.setState({
-          gioHang: cloneGioHang,
-        });
       }
     }
+    _chance == "tang" && viTriDt !== -1 && cloneGioHang[viTriDt].sl++;
 
-    //console.log(viTriDt);
+    this.setState({
+      gioHang: cloneGioHang,
+    });
+    this.tinhSoLuong(cloneGioHang);
   };
   render() {
     return (
@@ -73,7 +75,7 @@ export default class BaiTapGioHang extends Component {
             data-toggle="modal"
             data-target="#exampleModal2"
           >
-            Giỏ hàng: <span className="px-2"> {this.state.gioHang.length}</span>{" "}
+            Giỏ hàng: <span className="px-2"> {this.state.tongSoLuong}</span>{" "}
             sản phẩm
           </button>
         </div>
@@ -81,11 +83,13 @@ export default class BaiTapGioHang extends Component {
           dsdt={this.state.dsDt}
           handleDtShow={this.changeDtShow}
           handelGioHang={this.changeGioHang}
+          handleSoLuong={this.tinhSoLuong}
         />
         <ModalChiTietDt dtShow={this.state.dtShow} />
         <ModalGioHang
           gioHang={this.state.gioHang}
           changeSoLuong={this.changeSoLuong}
+          handleSoLuong={this.tinhSoLuong}
         />
       </>
     );

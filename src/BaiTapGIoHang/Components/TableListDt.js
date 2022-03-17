@@ -8,6 +8,7 @@ export default class TableListDt extends Component {
           dt={item}
           handleDtShow={this.props.handleDtShow}
           handleGioHang={this.props.handleGioHang}
+          handleSoLuong={this.props.handleSoLuong}
         />
       );
     });

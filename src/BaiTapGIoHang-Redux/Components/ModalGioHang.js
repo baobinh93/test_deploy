@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
-export default class ModalGioHang extends Component {
+import { connect } from "react-redux";
+class ModalGioHang extends Component {
   render() {
     return (
       <div
@@ -53,8 +53,8 @@ export default class ModalGioHang extends Component {
                             type="button"
                             className="btn btn-primary btn-sm mr-1"
                             onClick={() => {
-                              this.props.changeSoLuong(dienThoai.id, "giam");
-                              this.props.handleSoLuong();
+                              this.props.giamSl(dienThoai.id);
+                              // this.props.handleSoLuong();
                             }}
                           >
                             -
@@ -64,8 +64,8 @@ export default class ModalGioHang extends Component {
                             type="button"
                             className="btn btn-primary btn-sm ml-1"
                             onClick={() => {
-                              this.props.changeSoLuong(dienThoai.id, "tang");
-                              this.props.handleSoLuong();
+                              this.props.tangSl(dienThoai.id);
+                              //this.props.handleSoLuong();
                             }}
                           >
                             +
@@ -95,3 +95,26 @@ export default class ModalGioHang extends Component {
     );
   }
 }
+
+let mapStateToProps = (state) => {
+  return {
+    gioHang: state.gioHang,
+  };
+};
+let mapDispatchToProps = (dispatch) => {
+  return {
+    tangSl: (_id) => {
+      dispatch({
+        type: "tangSoLuong",
+        idDt: _id,
+      });
+    },
+    giamSl: (_id) => {
+      dispatch({
+        type: "giamSoLuong",
+        idDt: _id,
+      });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ModalGioHang);

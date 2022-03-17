@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 
-export default class BoxDt extends Component {
+import { connect } from "react-redux";
+class BoxDt extends Component {
   handleShowMobile(_dt) {
-    this.props.handleDtShow(_dt);
+    return this.props.showDt(_dt);
   }
-  handleChonMua(_dt) {
-    this.props.handleGioHang(_dt);
+  handleChonMua(_dtDuocChonMua) {
+    return this.props.themGioHang(_dtDuocChonMua);
   }
   renderMobile() {
     return (
@@ -35,7 +36,7 @@ export default class BoxDt extends Component {
             className="btn btn-danger "
             onClick={() => {
               this.handleChonMua(this.props.dt);
-              this.props.handleSoLuong();
+              // this.props.handleSoLuong();
             }}
           >
             Chọn mua
@@ -48,3 +49,22 @@ export default class BoxDt extends Component {
     return this.renderMobile();
   }
 }
+
+let mapDispatchToProps = (dispatch) => {
+  return {
+    showDt: (_dt) => {
+      dispatch({
+        type: "showDt",
+        dt: _dt,
+      });
+    },
+    themGioHang: (_dt) => {
+      dispatch({
+        type: "themSanPham",
+        newDt: _dt,
+      });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(BoxDt);

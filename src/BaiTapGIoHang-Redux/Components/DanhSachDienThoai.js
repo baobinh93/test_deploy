@@ -5,10 +5,10 @@ export default class DanhSachDienThoai extends Component {
     return (
       <div className="row container mx-auto">
         <TableListDt
-          dsDt={this.props.dsdt}
-          handleDtShow={this.props.handleDtShow}
-          handleGioHang={this.props.handelGioHang}
-          handleSoLuong={this.props.handleSoLuong}
+        //dsDt={this.props.dsdt}
+        //  handleDtShow={this.props.handleDtShow}
+        // handleGioHang={this.props.handelGioHang}
+        // handleSoLuong={this.props.handleSoLuong}
         />
       </div>
     );
